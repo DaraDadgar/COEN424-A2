@@ -17,7 +17,7 @@ def create_user():
     if err:
         return {"error": err}, 400
 
-    user = repos.create_user(payload["email"], payload["address"])
+    user = repos.create_user(payload["email"], payload["address"], payload["age"])
     return user, 201
 
 def update_user_email(user_id: str):
