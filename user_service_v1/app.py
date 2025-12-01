@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from user_service.routes import api
+from user_service_v1.routes import api
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv(), override=False)

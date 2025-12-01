@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restx import Api, Namespace, Resource, fields
-from user_service.views import (
+from user_service_v1.views import (
     create_user,
     update_user_email,
     update_user_address,

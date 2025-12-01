@@ -1,9 +1,9 @@
 # user_service/views.py
 
 from flask import request
-from user_service.serializers import validate_user_payload, validate_email, validate_address
-from user_service import repos
-from user_service.events import publish_user_updated
+from user_service_v1.serializers import validate_user_payload, validate_email, validate_address
+from user_service_v1 import repos
+from user_service_v1.events import publish_user_updated
 
 def get_user(user_id: str):
     user = repos.get_user(user_id)

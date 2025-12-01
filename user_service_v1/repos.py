@@ -1,6 +1,6 @@
 # user_service/repos.py
 import uuid
-from user_service.db import users_collection
+from user_service_v1.db import users_collection
 
 def create_user(email: str, delivery_address: str):
     # Example _id format: "U001", "U002", ...
