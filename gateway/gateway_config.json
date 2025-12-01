@@ -1,5 +1,5 @@
 {
-  "routing_percentage_v1": 0.30,
+  "routing_percentage_v1": 0.3,
   "v1_url": "http://localhost:8001",
   "v2_url": "http://localhost:8003"
 }
