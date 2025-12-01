@@ -12,12 +12,13 @@ def get_user(user_id: str):
     return user, 200
 
 def create_user():
-    payload = request.get_json()
+    payload = request.get_json() or {}
     err = validate_user_payload(payload)
     if err:
         return {"error": err}, 400
 
-    user = repos.create_user(payload["email"], payload["address"], payload["age"])
+    # age is optional in v2; use .get() so missing age doesn't raise KeyError
+    user = repos.create_user(payload["email"], payload["address"], payload.get("age"))
     return user, 201
 
 def update_user_email(user_id: str):

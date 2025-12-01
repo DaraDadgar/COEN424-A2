@@ -1,8 +1,9 @@
 # user_service/repos.py
 import uuid
+from typing import Optional
 from user_service_v2.db import users_collection
 
-def create_user(email: str, delivery_address: str, age: int):
+def create_user(email: str, delivery_address: str, age: Optional[int]):
     # Example _id format: "U001", "U002", ...
     last_user = users_collection.find_one(sort=[("_id", -1)])
     if last_user:
@@ -14,8 +15,11 @@ def create_user(email: str, delivery_address: str, age: int):
         "_id": next_id,
         "email": email,
         "delivery_address": delivery_address,
-        "age": age
     }
+
+    # Only include age if it was provided (avoid storing nulls)
+    if age is not None:
+        doc["age"] = age
 
     users_collection.insert_one(doc)
     return doc

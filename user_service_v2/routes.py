@@ -30,7 +30,7 @@ user_model = restx.model("User", {
 create_user_payload = restx.model("CreateUserPayload", {
     "email": fields.String(required=True),
     "address": fields.String(required=True, description="delivery address"),
-    "age": fields.Integer(required=True, description="age of the user")
+    "age": fields.Integer(required=False, description="age of the user")
 })
 
 update_email_payload = restx.model("UpdateEmailPayload", {
