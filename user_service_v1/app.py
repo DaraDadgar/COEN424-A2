@@ -8,6 +8,11 @@ load_dotenv(find_dotenv(), override=False)
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(api, url_prefix="/api")
+    # Add a response header to help identify which service handled a request
+    @app.after_request
+    def add_version_header(response):
+        response.headers["X-Service-Version"] = "v1"
+        return response
     return app
 
 if __name__ == "__main__":
