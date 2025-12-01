@@ -2,7 +2,18 @@
 
 from order_service.db import orders_collection
 
-def create_order(order_id, user_id, items, email, address):
+def create_order(user_id, items, email, address):
+
+    # find last order ID:
+    last_order = orders_collection.find_one(sort=[("_id", -1)])
+    if last_order:
+        # Extract numeric part: O001 -> 1
+        next_num = int(last_order["_id"][1:]) + 1
+    else:
+        next_num = 1
+
+    order_id = "O" + str(next_num).zfill(3)
+
     doc = {
         "_id": order_id,
         "user_id": user_id,
@@ -11,9 +22,9 @@ def create_order(order_id, user_id, items, email, address):
         "delivery_address": address,
         "status": "under process"
     }
+
     orders_collection.insert_one(doc)
     return doc
-
 
 def get_orders_by_status(status):
     cursor = orders_collection.find({"status": status}, {"_id": 0})

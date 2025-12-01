@@ -6,7 +6,6 @@ from order_service import repos
 def create_order_handler():
     data = request.get_json()
     order = repos.create_order(
-        data["order_id"],
         data["user_id"],
         data["items"],
         data["email"],

@@ -21,14 +21,14 @@ user_ns = restx.namespace("users", description="User operations")
 
 # ---------- Swagger Models ----------
 user_model = restx.model("User", {
-    "userId": fields.String(example="u123"),
-    "email": fields.String(example="test@example.com"),
-    "address": fields.String(example="123 Street, Montreal"),
+    "userId": fields.String(attribute="_id", example="U001"),
+    "email": fields.String(example="alice@example.com"),
+    "delivery_address": fields.String(example="123 King St, Montreal")
 })
 
 create_user_payload = restx.model("CreateUserPayload", {
     "email": fields.String(required=True),
-    "address": fields.String(required=True)
+    "address": fields.String(required=True, description="delivery address")
 })
 
 update_email_payload = restx.model("UpdateEmailPayload", {

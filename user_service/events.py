@@ -1,4 +1,5 @@
-# user_service/events.py
+# user_service/events.py  (Compatible with consumer)
+
 import json
 import os
 import pika
@@ -8,19 +9,8 @@ load_dotenv(find_dotenv(), override=False)
 
 RABBIT_HOST = os.getenv("RABBITMQ_HOST", "localhost")
 RABBIT_PORT = int(os.getenv("RABBITMQ_PORT", 5672))
-RABBIT_USER = os.getenv("RABBITMQ_USERNAME", "guest")
-RABBIT_PASS = os.getenv("RABBITMQ_PASSWORD", "guest")
-RABBIT_EXCHANGE = os.getenv("RABBITMQ_EXCHANGE", "user_events")
+RABBIT_QUEUE = os.getenv("RABBITMQ_QUEUE", "user_updates")
 
-def _get_connection():
-    credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASS)
-    return pika.BlockingConnection(
-        pika.ConnectionParameters(
-            host=RABBIT_HOST,
-            port=RABBIT_PORT,
-            credentials=credentials
-        )
-    )
 
 def publish_user_updated(user_id, field, value):
     event = {
@@ -31,20 +21,21 @@ def publish_user_updated(user_id, field, value):
     }
 
     try:
-        connection = _get_connection()
+        connection = pika.BlockingConnection(
+            pika.ConnectionParameters(host=RABBIT_HOST, port=RABBIT_PORT)
+        )
         channel = connection.channel()
 
-        # declare exchange (fanout or topic)
-        channel.exchange_declare(exchange=RABBIT_EXCHANGE, exchange_type="fanout")
+        # MATCH CONSUMER — declare same queue
+        channel.queue_declare(queue=RABBIT_QUEUE)
 
         channel.basic_publish(
-            exchange=RABBIT_EXCHANGE,
-            routing_key="",
-            body=json.dumps(event).encode("utf-8")
+            exchange="",                # IMPORTANT
+            routing_key=RABBIT_QUEUE,   # MUST MATCH CONSUMER
+            body=json.dumps(event)
         )
 
-        print("[EVENT PUBLISHED]", json.dumps(event))
-
+        print("[EVENT PUBLISHED]", event)
         connection.close()
         return True
 
