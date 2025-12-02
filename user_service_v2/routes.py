@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restx import Api, Namespace, Resource, fields
-from user_service.views import (
+from user_service_v2.views import (
     create_user,
     update_user_email,
     update_user_address,
@@ -23,12 +23,14 @@ user_ns = restx.namespace("users", description="User operations")
 user_model = restx.model("User", {
     "userId": fields.String(attribute="_id", example="U001"),
     "email": fields.String(example="alice@example.com"),
-    "delivery_address": fields.String(example="123 King St, Montreal")
+    "delivery_address": fields.String(example="123 King St, Montreal"),
+    "age": fields.Integer(example=30)
 })
 
 create_user_payload = restx.model("CreateUserPayload", {
     "email": fields.String(required=True),
-    "address": fields.String(required=True, description="delivery address")
+    "address": fields.String(required=True, description="delivery address"),
+    "age": fields.Integer(required=False, description="age of the user")
 })
 
 update_email_payload = restx.model("UpdateEmailPayload", {
