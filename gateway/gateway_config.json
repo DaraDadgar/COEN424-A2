@@ -1,5 +1,5 @@
 {
   "routing_percentage_v1": 0.5,
-  "v1_url": "http://127.0.0.1:8001/api",
-  "v2_url": "http://127.0.0.1:8003/api"
+  "v1_url": "http://192.168.50.36:8001/api",
+  "v2_url": "http://192.168.50.36:8003/api"
 }

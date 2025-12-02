@@ -85,9 +85,7 @@ def route_user_request(path):
 @app.route("/orders", defaults={"path": ""}, methods=["GET", "POST", "PUT", "DELETE"])
 def route_orders(path):
     """Orders don't need strangler pattern routing — just forward."""
-    # When running as a monolith container the order service listens locally
-    # on port 8002 and registers APIs under /api. Forward to that path.
-    return forward_request(f"http://127.0.0.1:8002/api/orders/{path}")
+    return forward_request(f"http://order_service:8000/orders/{path}")
 
 
 @app.route("/")
